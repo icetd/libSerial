@@ -244,6 +244,7 @@ void Serial::StartAutoRead()
 void Serial::StopAutoRead()
 {
     this->stop();
+	isAutoRead = false;
 }
 
 int Serial::Destroy()
