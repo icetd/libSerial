@@ -276,7 +276,6 @@ void Serial::run()
             break;
         case 0:
             break;
-
         default:
             uint16_t len;
             memset(buf, 0, sizeof (buf));
