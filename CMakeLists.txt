@@ -27,7 +27,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "serial")
 set_target_properties(${PROJECT_NAME} PROPERTIES CLEAN_DIRECT_OUTPUT 1)
 add_executable(${PROJECT_NAME}_test test/test.cc)
 
-target_link_libraries(${PROJECT_NAME}_test ${PROJECT_NAME})
+target_link_libraries(${PROJECT_NAME}_test ${PROJECT_NAME} pthread)
 
 # out set
 set (OUT_BIN ${CMAKE_BINARY_DIR}/target/lib)

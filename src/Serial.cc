@@ -280,7 +280,7 @@ void Serial::run()
             uint16_t len;
             memset(buf, 0, sizeof (buf));
             len = read(m_fd, buf, sizeof(buf));
-            buf[len - 1] = '\0';
+            buf[len] = '\0';
             OnSerialEnd(buf, len);
             break;
         }
