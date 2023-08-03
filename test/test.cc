@@ -13,7 +13,7 @@ void onSerialCmd(uint8_t *data, uint16_t len)
 
 int main()
 {
-    initLogger(INFO);
+    initLogger(ERROR);
     Serial *serial = new Serial("/dev/ttyUSB0");
 
     int re;
