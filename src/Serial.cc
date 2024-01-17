@@ -254,9 +254,9 @@ int Serial::Destroy()
     return close(m_fd);
 }
 
-void Serial::SetSerialHandler(void (*xerc)(uint8_t *, uint16_t))
+void Serial::SetSerialHandler(std::function<void (uint8_t*, uint16_t)> callback)
 {
-    OnSerialEnd = xerc;
+    onSerialCallback = std::move(callback);
 }
 
 void Serial::run()
@@ -281,7 +281,7 @@ void Serial::run()
             memset(buf, 0, sizeof (buf));
             len = read(m_fd, buf, sizeof(buf));
             buf[len] = '\0';
-            OnSerialEnd(buf, len);
+            onSerialCallback(buf, len);
             break;
         }
     }

@@ -2,7 +2,9 @@
 #define SERIAL_H
 
 #include <string>
+#include <functional>
 #include "MThread.h"
+
 
 class Serial : public MThread
 {
@@ -27,7 +29,7 @@ public:
 
     int Destroy();
 
-    void SetSerialHandler(void (* xerc) (uint8_t*, uint16_t));
+	void SetSerialHandler(std::function<void (uint8_t*, uint16_t)> callback);
     void StartAutoRead();
     void StopAutoRead();
     virtual void run() override;
@@ -39,7 +41,7 @@ private:
 	int m_openFlags;
 	SerialOpt_t serialOpt;
     bool isAutoRead = false;
-    void (* OnSerialEnd) (uint8_t *data, uint16_t len);
+	std::function<void (uint8_t *, uint16_t )> onSerialCallback;
 };
 
 #endif
