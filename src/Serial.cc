@@ -202,15 +202,24 @@ int Serial::Setopt(SerialOpt_t *serialOpt)
     }
 
     /*hardware control*/
-    if (serialOpt->hardflow) {
+    if (serialOpt->hardflow == 0) {
         newtio.c_cflag |= CRTSCTS;
-    } else {
+    } else if (serialOpt->hardflow == 1) {
         newtio.c_cflag |= ~CRTSCTS;
-    }
+    } else if (serialOpt->hardflow == 2) {
+		newtio.c_cflag |= IXON | IXOFF | IXANY;
+	}
+
+    //修改输出模式，原始数据输出    
+    newtio.c_oflag &= ~OPOST;    
+    newtio.c_lflag &= ~(ICANON | ECHO | ECHOE | ISIG);    
+    //options.c_lflag &= ~(ISIG | ICANON);    
+       
+    //设置等待时间和最小接收字符    
 
     /*read optional set*/
-    newtio.c_cc[VTIME] = 10;	/* Time-out value (tenths of a second) [!ICANON]. */
-    newtio.c_cc[VMIN] = 0;	/* Minimum number of bytes read at once [!ICANON]. */
+    newtio.c_cc[VTIME] = 1;	/* Time-out value (tenths of a second) [!ICANON]. */
+    newtio.c_cc[VMIN] = 1;	/* Minimum number of bytes read at once [!ICANON]. */
 
     /*set serial flush*/
     tcflush(m_fd, TCIOFLUSH);
