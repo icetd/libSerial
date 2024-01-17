@@ -232,8 +232,8 @@ int Serial::Setopt(SerialOpt_t *serialOpt)
     newtio.c_cc[VMIN] = 1;	/* Minimum number of bytes read at once [!ICANON]. */
 
     /* set serial flush
-	 * If data overflow occurs, receive the data but no longer read it. Refresh the received data but no longer read it.
-	 */
+     * If data overflow occurs, receive the data but no longer read it. Refresh the received data but no longer read it.
+     */
     tcflush(m_fd, TCIOFLUSH);
 
     if (tcsetattr(m_fd, TCSANOW, &newtio) != 0) {
