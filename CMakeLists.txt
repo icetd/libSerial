@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 project(serial)
 
 set (CMAKE_CXX_STANDARD 11)
-set (CMAKE_BUILD_TYPE Release)
+set (CMAKE_BUILD_TYPE Debug)
 
 file(GLOB_RECURSE SRC_FILES
 	"${CMAKE_CURRENT_LIST_DIR}/src/*.cc"

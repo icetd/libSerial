@@ -1,6 +1,7 @@
 #ifndef SERIAL_H
 #define SERIAL_H
 
+#include <bits/stdint-uintn.h>
 #include <string>
 #include <functional>
 #include "MThread.h"
@@ -10,11 +11,11 @@ class Serial : public MThread
 {
 public:
 	typedef struct{
-		int speed;
+		int	 speed;
 		int dataBits;
 		int stopbits;
-		int	parity;
-		int hardflow;
+		int parity;
+		int flowControlMode;
 	} SerialOpt_t;
 
 	Serial(const char *deviceName);

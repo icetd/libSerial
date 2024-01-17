@@ -201,27 +201,40 @@ int Serial::Setopt(SerialOpt_t *serialOpt)
         return -1;
     }
 
-    /*hardware control*/
-    if (serialOpt->hardflow == 0) {
-        newtio.c_cflag |= CRTSCTS;
-    } else if (serialOpt->hardflow == 1) {
+    /* 'n':  Not using flow control 
+	 * 'h':  Use hardware flow control
+	 * 's':  Use software flow control
+	 */ 
+	switch (serialOpt->flowControlMode) {
+	case 'n' :
+	case 'N' :
         newtio.c_cflag |= ~CRTSCTS;
-    } else if (serialOpt->hardflow == 2) {
+		break;
+	case 'h':
+	case 'H':
+        newtio.c_cflag |= CRTSCTS;
+		break;
+	case 's':
+	case 'S':
 		newtio.c_cflag |= IXON | IXOFF | IXANY;
+		break;
+	default:
+        LOG(ERROR, "unsupported flow control mode\n");
+		break;
 	}
 
-    //修改输出模式，原始数据输出    
+
+    //Modify the output mode, output original data
     newtio.c_oflag &= ~OPOST;    
     newtio.c_lflag &= ~(ICANON | ECHO | ECHOE | ISIG);    
-    //options.c_lflag &= ~(ISIG | ICANON);    
        
-    //设置等待时间和最小接收字符    
-
     /*read optional set*/
     newtio.c_cc[VTIME] = 1;	/* Time-out value (tenths of a second) [!ICANON]. */
     newtio.c_cc[VMIN] = 1;	/* Minimum number of bytes read at once [!ICANON]. */
 
-    /*set serial flush*/
+    /* set serial flush
+	 * If data overflow occurs, receive the data but no longer read it. Refresh the received data but no longer read it.
+	 */
     tcflush(m_fd, TCIOFLUSH);
 
     if (tcsetattr(m_fd, TCSANOW, &newtio) != 0) {

@@ -13,7 +13,7 @@ void onSerialCmd(uint8_t *data, uint16_t len)
 
 int main()
 {
-    initLogger(ERROR);
+    initLogger(INFO);
     Serial *serial = new Serial("/dev/ttyUSB0");
 
     int re;
@@ -28,7 +28,7 @@ int main()
         .dataBits = 8,
         .stopbits = 1,
         .parity = 'n',
-        .hardflow = 2,
+        .flowControlMode = 's',
     };
 
     re = serial->Setopt(&serialOpt);
