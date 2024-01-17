@@ -201,28 +201,27 @@ int Serial::Setopt(SerialOpt_t *serialOpt)
         return -1;
     }
 
-    /* 'n':  Not using flow control 
-	 * 'h':  Use hardware flow control
-	 * 's':  Use software flow control
-	 */ 
-	switch (serialOpt->flowControlMode) {
-	case 'n' :
-	case 'N' :
+    /* 'n':  Not using flow control
+     * 'h':  Use hardware flow control
+     * 's':  Use software flow control
+     */
+    switch (serialOpt->flowControlMode) {
+    case 'n':
+    case 'N':
         newtio.c_cflag |= ~CRTSCTS;
-		break;
-	case 'h':
-	case 'H':
+        break;
+    case 'h':
+    case 'H':
         newtio.c_cflag |= CRTSCTS;
-		break;
-	case 's':
-	case 'S':
-		newtio.c_cflag |= IXON | IXOFF | IXANY;
-		break;
-	default:
+        break;
+    case 's':
+    case 'S':
+        newtio.c_cflag |= IXON | IXOFF | IXANY;
+        break;
+    default:
         LOG(ERROR, "unsupported flow control mode\n");
-		break;
-	}
-
+        break;
+    }
 
     //Modify the output mode, output original data
     newtio.c_oflag &= ~OPOST;    
