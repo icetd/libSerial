@@ -43,7 +43,7 @@ int main()
     serial->StartAutoRead();
 
     for (;;) {
-		sleep(1);
+	sleep(1);
         std::string buf = "hello\r\n";
         serial->Write((char *)buf.c_str(), 7);
     }
