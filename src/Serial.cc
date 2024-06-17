@@ -205,18 +205,22 @@ int Serial::Setopt(SerialOpt_t *serialOpt)
      * 'h':  Use hardware flow control
      * 's':  Use software flow control
      */
+
     switch (serialOpt->flowControlMode) {
     case 'n':
     case 'N':
-        newtio.c_cflag |= ~CRTSCTS;
+        newtio.c_cflag &= ~CRTSCTS;                // No hardware flow control
+        newtio.c_iflag &= ~(IXON | IXOFF | IXANY); // No software flow control
         break;
     case 'h':
     case 'H':
-        newtio.c_cflag |= CRTSCTS;
+        newtio.c_cflag |= CRTSCTS;                 // Enable hardware flow control
+        newtio.c_iflag &= ~(IXON | IXOFF | IXANY); // No software flow control
         break;
     case 's':
     case 'S':
-        newtio.c_cflag |= IXON | IXOFF | IXANY;
+        newtio.c_cflag &= ~CRTSCTS;             // No hardware flow control
+        newtio.c_iflag |= IXON | IXOFF | IXANY; // Enable software flow control
         break;
     default:
         LOG(ERROR, "unsupported flow control mode\n");
