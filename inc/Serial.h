@@ -16,6 +16,8 @@ public:
 		int stopbits;
 		int parity;
 		int flowControlMode;
+		int vtime;
+		int vmin;
 	} SerialOpt_t;
 
 	Serial(const char *deviceName);

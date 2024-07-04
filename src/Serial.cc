@@ -10,7 +10,7 @@
 
 Serial::Serial(const char *deviceName) :
         m_deviceName(deviceName),
-        m_openFlags(O_RDWR | O_NDELAY)
+        m_openFlags(O_RDWR | !O_NONBLOCK | O_NOCTTY)
 {
 
 }
@@ -34,10 +34,9 @@ int Serial::Init() {
         return m_fd;
     }
 
-    // set serial to NBLOCK mode
     int flags = 0;
     flags = fcntl(m_fd, F_GETFL, 0);
-    flags &= ~O_NONBLOCK;
+    flags &= m_openFlags;
 
     if (fcntl(m_fd, F_SETFL, flags) < 0) {
         LOG(ERROR, "fcntl failed.");
@@ -232,8 +231,8 @@ int Serial::Setopt(SerialOpt_t *serialOpt)
     newtio.c_lflag &= ~(ICANON | ECHO | ECHOE | ISIG);    
        
     /*read optional set*/
-    newtio.c_cc[VTIME] = 1;	/* Time-out value (tenths of a second) [!ICANON]. */
-    newtio.c_cc[VMIN] = 1;	/* Minimum number of bytes read at once [!ICANON]. */
+    newtio.c_cc[VTIME] = serialOpt->vtime;	/* Time-out value (tenths of a second) [!ICANON]. */
+    newtio.c_cc[VMIN] = serialOpt->vmin;	/* Minimum number of bytes read at once [!ICANON]. */
 
     /* set serial flush
      * If data overflow occurs, receive the data but no longer read it. Refresh the received data but no longer read it.

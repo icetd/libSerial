@@ -29,6 +29,8 @@ int main()
         .stopbits = 1,
         .parity = 'n',
         .flowControlMode = 's',
+        .vtime = 1, // 0.1s * vtime receive timeout
+        .vmin = 1,
     };
 
     re = serial->Setopt(&serialOpt);
