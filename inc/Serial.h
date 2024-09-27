@@ -11,7 +11,7 @@ class Serial : public MThread
 {
 public:
 	typedef struct{
-		int	 speed;
+		int speed;
 		int dataBits;
 		int stopbits;
 		int parity;
